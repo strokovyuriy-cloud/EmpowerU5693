@@ -23,6 +23,10 @@ def load_and_predict(X: ArrayLike, filename: str = "linear_regression_model.jobl
     
     # TODO: your code here
 
+    model = load(filename)
+    y = model.predict(X)
+
+
     return y
 
 def create_streamlit_app():
