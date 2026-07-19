@@ -29,45 +29,19 @@ def train_regression_model(X_train: ArrayLike, y_train: ArrayLike) -> LinearRegr
 
     model = LinearRegression()
     model.fit(X_train, y_train)
-
-    def save_regression_model(model: LinearRegression, filename: str = "linear_regression_model.joblib"):
-    dump(model, filename)
-    
-    # TODO: your code here
-
     return model
 
 def save_regression_model(model: LinearRegression, filename: str = "linear_regression_model.joblib"):
-    """
-    Serialize and save the regression model.
 
-    This function takes a trained regression 'model' and file name 'filename' that has a default value.
-    It uses Joblib 'dump' to save the model using the provided file name.
-
-    Args:
-        model (sklearn.linear_model.LinearRegression): Trained regression model to be evaluated.
-        filename (str): Name of the file that is used to store the model.
-
-    """
+    dump(model, filename)
     
-    # TODO: your code here
 
-def evaluate_regression_model(model: LinearRegression, X_test: ArrayLike, y_test: ArrayLike):
-    """
-    Evaluate the performance of a regression model on test data.
 
-    This function takes a trained regression 'model', test feature matrix 'X_test',
-    and corresponding test target values 'y_test'. It calculates Mean Squared Error (MSE)
-    and prints it in terminal.
+def evaluate_regression_model(model, X_test, y_test):
 
-    Args:
-        model (sklearn.linear_model.LinearRegression): Trained regression model to be evaluated.
-        X_test (array-like): Test feature matrix.
-        y_test (array-like): Validation target values.
+    y_pred = model.predict(X_test)
 
-    """
-    
-    # TODO: your code here
+    mse = mean_squared_error(y_test, y_pred)
 
     print(f"Mean Squared Error: {mse}")
 
@@ -87,6 +61,9 @@ def save_initial_datasets(X: ArrayLike, y: ArrayLike):
     y_filename = "y.joblib"
     
     # TODO: your code here
+
+    dump(X, X_filename)
+    dump(y, y_filename)
 
 if __name__ == '__main__':
     # Generate a dataset

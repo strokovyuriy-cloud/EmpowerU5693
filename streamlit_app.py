@@ -30,33 +30,22 @@ def load_and_predict(X: ArrayLike, filename: str = "linear_regression_model.jobl
     return y
 
 def create_streamlit_app():
-    """
-    Creates a Streamlit web application for making predictions with a simple regression model.
 
-    This function sets up a Streamlit app with a user interface for inputting a single feature 
-    value and making predictions using a pre-trained regression model. The app includes:
+    st.title("Regression Prediction")
+
+    input_feature = st.slider(
+        "Select input value",
+        -3.0,
+        3.0
+    )
+
     
-    - A title displayed at the top of the app.
-    - A slider for the user to select an input feature value within a specified range (-3.0 to 3.0).
-    - A "Predict value" button that, when clicked, triggers the prediction process.
-    - Upon clicking the "Predict value" button, the function:
-        - Calls `load_and_predict`, passing the selected feature as input, to load the regression model 
-          and make a prediction.
-        - Displays the prediction result on the app.
-        - Calls `visualize_difference`, passing the input feature and the prediction result, 
-          to visualize the difference between the predicted value and the actual value in the original dataset.
+    if st.button("Predict value"):
+        prediction = load_and_predict([[input_feature]])
+        st.write("Prediction:", prediction)
 
-    Note: This function does not return any value. It directly manipulates the Streamlit app's UI by 
-    writing content and rendering UI elements.
-    """
-    # TODO: your code here
-
-    # Streamlit app title
-
-    # User input for new prediction using a slider
-
-    # Button to make a prediction
-
+        visualize_difference(input_feature, prediction)
+    
         # 1. Call load_and_predict functions.
         # Make sure you convert the input_feature to a matrix before calling load_and_predict, e.g., load_and_predict([[input_feature]])
 
@@ -120,7 +109,32 @@ def visualize_difference(input_feature: float, prediction: ArrayLike):
     # Annotate the plot with the difference between the actual and predicted target values, positioned halfway between them and offset slightly for visibility.
     # plt.annotate...
 
+    
+    plt.scatter(X, y, color="grey", label="Dataset")
+    plt.scatter(input_feature, actual_target, color="blue",label="Actual target")
+    plt.scatter(input_feature, prediction[0], color="red", label="Predicted target")
+
+    plt.legend()
+    plt.title("Actual vs Predicted")
+    plt.xlabel("Feature")
+    plt.ylabel("Target")
+    plt.grid(True)
+
+    plt.plot(
+        [input_feature, input_feature],
+        [actual_target, prediction[0]],
+        "k--"
+    )
+
+    difference = actual_target - prediction[0]
+
+    plt.annotate(
+        f"  Difference = {difference:.2f}",
+        (input_feature, (actual_target + prediction[0]) / 2)
+    )
+
     st.pyplot(fig)
+
 
 # This is a helper function. No need to edit it
 def _index_of_closest(X: ArrayLike, k: float) -> int:
